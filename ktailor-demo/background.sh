@@ -30,22 +30,26 @@ cat << 'EOF' > /root/demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-app
+  name: insert-env-app
+  namespace: default
   labels:
     ktailor.dev/fit: "central.ktailor-test"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo
+      app: insert-env
   template:
     metadata:
       labels:
-        app: demo
+        app: inbsert-env
     spec:
       containers:
-      - name: main-app
-        image: nginx:alpine
+      - name: insert-env
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - "while true; do echo \"$(date) - KTAILORTEST: ${KTAILORTEST}\"; sleep 3; done"
         env:
           - name: KTAILORTEST
             value: "This text will be overwritten by kTailor."
@@ -113,6 +117,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: timetravel-app
+  namespace: default
   labels:
     ktailor.dev/fit: "local.lft-plus222d"
 spec:
