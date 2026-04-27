@@ -1,4 +1,1 @@
-# Step 2: Local Mutation
-`kubectl apply -f /root/timetravel-template.yaml`{{execute}}
-`kubectl apply -f /root/timetravel-app.yaml`{{execute}}
-`kubectl get pods`{{execute}}
+### Step 2: Local Mutation\n`kc apply -f /root/timetravel-template.yaml`{{execute}}\n`kc apply -f /root/timetravel-app.yaml`{{execute}}

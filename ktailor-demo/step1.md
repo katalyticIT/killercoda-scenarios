@@ -1,4 +1,1 @@
-# Step 1: Central Mutation
-`kubectl apply -f /root/demo-template.yaml`{{execute}}
-`kubectl apply -f /root/demo-app.yaml`{{execute}}
-`kubectl exec deploy/demo-app -- env | grep KTAILORTEST`{{execute}}
+### Step 1: Central Mutation\nYou can now use `kc` instead of `kubectl`.\n`kc apply -f /root/demo-template.yaml`{{execute}}\n`kc apply -f /root/demo-app.yaml`{{execute}}

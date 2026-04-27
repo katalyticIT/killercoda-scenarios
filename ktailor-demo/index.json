@@ -25,6 +25,14 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-kubeadm-1node"
+    "imageid": "kubernetes-kubeadm-1node",
+    "host0": {
+      "assets": [
+        {
+          "file": "assets",
+          "target": "/root/ktailor-demo/assets"
+        }
+      ]
+    }
   }
 }

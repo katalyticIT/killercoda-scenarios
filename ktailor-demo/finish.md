@@ -1,1 +1,1 @@
-Done! Visit [ktailor.dev](https://ktailor.dev).
+Done!

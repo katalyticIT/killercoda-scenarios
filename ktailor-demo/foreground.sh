@@ -4,7 +4,7 @@
   set +v
   clear
   echo "✨ Welcome to the kTailor Demo!"
-  echo "Preparing your cluster using local repository assets..."
+  echo "Shortcuts 'kc' and 'ns' have been added to your shell."
   echo -n "Booting kTailor... "
 
   while [ ! -f /root/.background_ready ]; do
