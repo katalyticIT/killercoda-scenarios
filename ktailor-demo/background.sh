@@ -12,10 +12,10 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 # 3. Wait for cert-manager webhook to be ready
 kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
 
-# 4. Install kTailor
-kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/rbac.yaml
-kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/certs.yaml
-kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/manifests.yaml
+# 4. Install kTailor (updated to the new repository for manifests)
+kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/certs.yaml
+kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/manifests.yaml
 
 # Wait for kTailor to be ready
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
