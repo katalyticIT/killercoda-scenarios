@@ -11,7 +11,7 @@
     echo -n "."
   done
 
-  if [ -f /root/error.txt ]; do
+  if [ -f /root/error.txt ]; then
     echo "We're sorry, something went wrong in the setup:"
     cat /root/errot.txt
   else
