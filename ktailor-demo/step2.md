@@ -10,4 +10,4 @@ Now we use a **local** template stored in the same namespace as the application 
 
 3. Verify the mutation (InitContainer and Env Vars):
 `kubectl get pods`{{execute}}
-`kubectl exec deploy/timetravel-app -- env | grep FAKETIME`{{execute}}
+`kubectl exec deploy/timetravel-app -- date`{{execute}}

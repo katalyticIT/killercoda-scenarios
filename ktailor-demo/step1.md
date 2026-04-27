@@ -9,4 +9,4 @@ In this step, we use a **central** template managed in the `ktailor` namespace.
 `kubectl apply -f /root/demo-app.yaml`{{execute}}
 
 3. Check the result:
-`kubectl exec deploy/demo-app -- env | grep KTAILORTEST`{{execute}}
+`kubectl exec deploy/insert-env-app -- env | grep KTAILORTEST`{{execute}}
