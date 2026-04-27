@@ -17,6 +17,16 @@
         "text": "step2.md"
       }
     ],
+
+    "assets":
+      "host0": [
+        {
+          "file": "assets",
+          "target": "/root/assets"
+        }
+      ]
+    },
+
     "finish": {
       "text": "finish.md"
     }
@@ -25,14 +35,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-kubeadm-1node",
-    "host0": {
-      "assets": [
-        {
-          "file": "assets",
-          "target": "/root/assets"
-        }
-      ]
-    }
+    "imageid": "kubernetes-kubeadm-1node"
   }
 }
