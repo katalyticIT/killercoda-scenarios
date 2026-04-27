@@ -2,7 +2,7 @@
 {
   set +x
   set +v
-  clear
+  #clear
   echo -e "\n✨ Welcome to the kTailor Demo!\n"
   echo    "Shortcuts 'kc' and 'ns' have been added to your shell."
   echo -n "Booting kTailor..."
@@ -14,5 +14,4 @@
 
   echo -e "\n✅ Ready! Click 'Start' on the right.\n"
 
-  bash
 } 2>/dev/null
