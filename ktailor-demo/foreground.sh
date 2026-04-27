@@ -2,8 +2,8 @@
 {
   set +x
   set +v
-  #clear
-  echo -e "\n✨ Welcome to the kTailor Demo!\n"
+  clear
+  echo -e "\n✨ Welcome to the kTailor Demo! \n"
   echo    "Shortcuts 'kc' and 'ns' have been added to your shell."
   echo -n "Booting kTailor..."
 

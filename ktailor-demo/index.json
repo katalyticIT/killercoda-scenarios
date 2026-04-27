@@ -22,15 +22,15 @@
       "host01": [
         {
           "file": "rbac.yaml",
-          "target": "/root/rbac.yaml"
+          "target": "/root/assets"
         },
         {
           "file": "certs.yaml",
-          "target": "/root/assets/certs.yaml"
+          "target": "/root/assets"
         },
         {
           "file": "manifests.yaml",
-          "target": "/root/manifests.yaml"
+          "target": "/root/assets"
         }
       ]
     },
