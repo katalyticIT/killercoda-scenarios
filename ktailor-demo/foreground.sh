@@ -1,8 +1,9 @@
 #!/bin/bash
+set +x
 clear
 echo "✨ Welcome to the kTailor Demo!"
 echo "We are preparing your personal Kubernetes cluster in the background."
-echo -n "Installing cert-manager and pulling katalytic/ktailor:latest "
+echo -n "Installing cert-manager and ktailor... "
 
 while [ ! -f /root/.background_ready ]; do
   sleep 2

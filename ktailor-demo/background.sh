@@ -3,15 +3,16 @@ exec > /var/log/background_setup.log 2>&1
 
 echo "Starting installation..."
 
-# 1. Install cert-manager
+# 1. Create Namespace
+kubectl create namespace ktailor
+
+# 2. Install cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 
-# 2. Wait for cert-manager webhook to be ready (critical!)
+# 3. Wait for cert-manager webhook to be ready
 kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
 
-# 3. Install kTailor
-# Note: Adjust this URL to point to your actual raw manifest file in GitHub. 
-# The manifest should use the image: katalytic/ktailor:latest
+# 4. Install kTailor
 kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/rbac.yaml
 kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/certs.yaml
 kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy/manifests.yaml
@@ -19,7 +20,7 @@ kubectl apply -f https://raw.githubusercontent.com/katalytic/ktailor/main/deploy
 # Wait for kTailor to be ready
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
 
-# 4. Prepare Demo Files for Step 1
+# 5. Prepare Demo Files for Step 1 (Central Template)
 cat << 'EOF' > /root/demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -59,13 +60,13 @@ data:
             value: "Hello from Killercoda magic!"
 EOF
 
-# 5. Prepare Demo Files for Step 2 (Time Travel)
+# 6. Prepare Demo Files for Step 2 (Local Template)
 cat << 'EOF' > /root/timetravel-template.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: lft-plus222d
-  namespace: ktailor
+  namespace: default
   labels:
     ktailor.dev/template: "true"
 data:
@@ -105,7 +106,7 @@ kind: Deployment
 metadata:
   name: timetravel-app
   labels:
-    ktailor.dev/fit: "central.lft-plus222d"
+    ktailor.dev/fit: "local.lft-plus222d"
 spec:
   replicas: 1
   selector:
@@ -122,5 +123,5 @@ spec:
         command: ["sleep", "3600"]
 EOF
 
-# 6. Signal foreground.sh that background tasks are complete
+# 7. Signal background completion
 touch /root/.background_ready

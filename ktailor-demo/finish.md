@@ -1,13 +1,5 @@
-# Congratulations! 🎉
+# Mission Accomplished! 🎉
 
-You have successfully mutated Kubernetes workloads dynamically at runtime without touching the original manifests.
+You have explored both central and local mutation scopes with kTailor.
 
-**What you have seen:**
-1. kTailor operates completely transparently in the background.
-2. Templates are simple Kubernetes ConfigMaps.
-3. Everything is controlled via a simple label: `ktailor.dev/fit`.
-
-To install kTailor in your own cluster, visit our official documentation:
-
-👉 **[ktailor.dev](https://ktailor.dev)**
-👉 **[GitHub Repository](https://github.com/katalytic/ktailor)**
+Check out the full documentation at [ktailor.dev](https://ktailor.dev).
