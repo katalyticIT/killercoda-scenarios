@@ -42,14 +42,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: insert-env
+      app: insert-env-app
   template:
     metadata:
       labels:
-        app: insert-env
+        app: insert-env-app
     spec:
       containers:
-      - name: insert-env
+      - name: insert-env-app
         image: alpine:latest
         command: ["/bin/sh", "-c"]
         args:
