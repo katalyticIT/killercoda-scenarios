@@ -1,0 +1,30 @@
+{
+  "title": "kTailor - Dynamic Kubernetes Mutations",
+  "description": "Experience how kTailor equips Pods with sidecars, volumes, and variables at runtime – without touching the original manifests.",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "foreground": "foreground.sh",
+      "background": "background.sh"
+    },
+    "steps": [
+      {
+        "title": "The Basics: Injecting Variables",
+        "text": "step1.md"
+      },
+      {
+        "title": "Advanced: Sidecars & Volumes",
+        "text": "step2.md"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "kubernetes-kubeadm-1node"
+  }
+}
