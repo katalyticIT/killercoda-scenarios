@@ -21,8 +21,16 @@
     "assets": {
       "host0": [
         {
-          "file": "assets",
-          "target": "/root/assets"
+          "file": "rbac.yaml",
+          "target": "/root/assets/rbac.yaml"
+        },
+        {
+          "file": "certs.yaml",
+          "target": "/root/assets/certs.yaml"
+        },
+        {
+          "file": "manifests.yaml",
+          "target": "/root/assets/manifests.yaml"
         }
       ]
     },
