@@ -30,7 +30,7 @@
       "assets": [
         {
           "file": "assets",
-          "target": "/root/ktailor-demo/assets"
+          "target": "/root/assets"
         }
       ]
     }
