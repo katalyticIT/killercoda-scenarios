@@ -135,7 +135,7 @@ spec:
         app: timetravel
     spec:
       containers:
-      - name: my-app
+      - name: timetravel
         image: debian:bookworm-slim
         command: ["bash", "-c", "while true ; do date ; sleep 2 ; done "]
 EOF
