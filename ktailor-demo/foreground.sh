@@ -4,8 +4,7 @@
   set +v
   clear
   echo -e "\n✨ Welcome to the kTailor Demo! \n"
-  echo    "Shortcuts 'kc' and 'ns' have been added to your shell."
-  echo -n "Booting kTailor..."
+  echo -n "Installing kTailor..."
 
   while [ ! -f /root/.background_ready ]; do
     sleep 2
