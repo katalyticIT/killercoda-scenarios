@@ -1,7 +1,10 @@
 #!/bin/bash
 exec > /var/log/background_setup.log 2>&1
 
-echo "Starting installation..."
+# Move into scenario directory to access assets
+cd /root/ktailor-demo
+
+echo "Starting localized installation..."
 
 # 1. Create Namespace
 kubectl create namespace ktailor
@@ -9,18 +12,18 @@ kubectl create namespace ktailor
 # 2. Install cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 
-# 3. Wait for cert-manager webhook to be ready
+# 3. Wait for cert-manager
 kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
 
-# 4. Install kTailor (updated to the new repository for manifests)
-kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/rbac.yaml
-kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/certs.yaml
-kubectl apply -f https://raw.githubusercontent.com/katalyticIT/killercoda-scenarios/main/deploy/manifests.yaml
+# 4. Install kTailor from local assets
+kubectl apply -f assets/rbac.yaml
+kubectl apply -f assets/certs.yaml
+kubectl apply -f assets/manifests.yaml
 
-# Wait for kTailor to be ready
+# Wait for kTailor
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
 
-# 5. Prepare Demo Files for Step 1 (Central Template)
+# 5. Prepare Demo Files (remain in /root for the user)
 cat << 'EOF' > /root/demo-app.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -57,10 +60,9 @@ data:
       insertOrOverwrite:
         env:
           - name: KTAILORTEST
-            value: "Hello from Killercoda magic!"
+            value: "Hello from local Killercoda assets!"
 EOF
 
-# 6. Prepare Demo Files for Step 2 (Local Template)
 cat << 'EOF' > /root/timetravel-template.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -123,5 +125,4 @@ spec:
         command: ["sleep", "3600"]
 EOF
 
-# 7. Signal background completion
 touch /root/.background_ready
