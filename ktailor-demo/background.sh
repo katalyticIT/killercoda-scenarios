@@ -18,8 +18,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 # 4. Wait for cert-manager
 kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
 if [ $? -ne 1 ] ; then
-  echo "Certificate manager couldn't be installed. Perhaps there's not enough free ressources. Please try again later."
-  exit 1
+  echo >/root/error.txt "Certificate manager couldn't be installed. Perhaps there's not enough free ressources. Please try again later."
 fi
 
 # 5. Install kTailor from local assets
