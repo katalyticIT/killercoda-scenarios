@@ -5,6 +5,7 @@ cd /root/ktailor-demo
 echo "Starting installation..."
 
 # 1. Add Shortcuts/Aliases to .bashrc
+echo "alias cls='clear'"  >> /root/.bashrc
 echo "alias kc='kubectl'" >> /root/.bashrc
 echo "alias ns='kubectl config set-context --current --namespace'" >> /root/.bashrc
 
@@ -133,7 +134,7 @@ spec:
       containers:
       - name: my-app
         image: busybox
-        command: ["sleep", "3600"]
+        command: ["bash", "-c", "while true ; do date ; sleep 2 ; done "]
 EOF
 
 touch /root/.background_ready
