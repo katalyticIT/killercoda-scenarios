@@ -4,7 +4,7 @@
   set +v
   clear
   echo -e "\n✨ Welcome to the kTailor Demo! \n"
-  echo -n "Installing kTailor..."
+  echo -n "Installing the kTailor webhook ..."
 
   while [ ! -f /root/.background_ready ]; do
     sleep 2

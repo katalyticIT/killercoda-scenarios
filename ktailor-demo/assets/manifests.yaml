@@ -35,7 +35,7 @@ metadata:
 spec:
   ports:
   - port: 443
-    target_port: 8443
+    targetPort: 8443
   selector:
     app: ktailor
 ---
