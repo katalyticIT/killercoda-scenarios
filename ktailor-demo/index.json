@@ -18,7 +18,7 @@
       }
     ],
 
-    "assets":
+    "assets": {
       "host0": [
         {
           "file": "assets",
