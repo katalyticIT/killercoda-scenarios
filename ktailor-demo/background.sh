@@ -5,7 +5,6 @@ cd /root/ktailor-demo
 echo "Starting installation..."
 
 # 1. Add Shortcuts/Aliases to .bashrc
-# Note: Using 'kubectl' directly as this is a standard kubeadm environment
 echo "alias kc='kubectl'" >> /root/.bashrc
 echo "alias ns='kubectl config set-context --current --namespace'" >> /root/.bashrc
 
@@ -47,6 +46,10 @@ spec:
       containers:
       - name: main-app
         image: nginx:alpine
+        env:
+          - name: KTAILORTEST
+            value: "This text will be overwritten by kTailor."
+
 EOF
 
 cat << 'EOF' > /root/demo-template.yaml
@@ -63,7 +66,7 @@ data:
       insertOrOverwrite:
         env:
           - name: KTAILORTEST
-            value: "Hello with aliases!"
+            value: "The content of this variable was modified by kTailor."
 EOF
 
 cat << 'EOF' > /root/timetravel-template.yaml

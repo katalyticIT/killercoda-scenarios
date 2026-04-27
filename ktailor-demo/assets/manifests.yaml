@@ -1,3 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ktailor-config
+  namespace: ktailor
+data:
+  ktailor.yaml: |
+    ---
+    transport:
+      port: 8443
+      secure: true
+      cert: /etc/ktailor/certs/tls.crt
+      key: /etc/ktailor/certs/tls.key
+    logging:
+      level: INFO
+    templates:
+      allowCustomTemplates: true
+    namespaces:
+      mode: blocklist   # Options: blocklist, allowlist
+      match:
+        exact:
+          - ignore-this-namespace
+        startsWith:
+          - "test-"
+          - "dev-"
+        endsWith:
+          - "-tmp"
+---
 apiVersion: v1
 kind: Service
 metadata:
