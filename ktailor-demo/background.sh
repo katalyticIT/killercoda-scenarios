@@ -16,8 +16,8 @@ kubectl create namespace ktailor
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 
 # 4. Wait for cert-manager
-kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=150s
-if [ $? -ne 1 ] ; then
+kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
+if [ $? -ne 0 ] ; then
   echo >/root/error.txt "Certificate manager couldn't be installed (in time). Perhaps there's not enough free ressources. Please try again later."
 fi
 
