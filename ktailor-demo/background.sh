@@ -22,18 +22,13 @@ if [ $? -ne 0 ] ; then
 fi
 
 # 5. Install kTailor from local assets
-kubectl apply -f assets/rbac.yaml
-kubectl apply -f assets/certs.yaml
-kubectl apply -f assets/manifests.yaml
+kubectl apply -f assets/setup.yaml
 
 # Wait for kTailor
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
 
 # 6. Install apps
-kubectl apply -f /root/demo-app.yaml
-kubectl apply -f /root/timetravel-app.yaml
-
+kubectl apply -f assets/apps.yaml
 kubectl wait --for=condition=Available deployment/timetravel-app -n default --timeout=60s
-
 
 touch /root/.background_ready

@@ -21,11 +21,19 @@
     "assets": {
       "host01": [
         {
-          "file": "setup",
+          "file": "setup.yaml",
           "target": "/root/assets/"
         },
         {
-          "file": "demo",
+          "file": "apps.yaml",
+          "target": "/root/assets/"
+        },
+        {
+          "file": "insert-env-template.yaml",
+          "target": "/root/"
+        },
+        {
+          "file": "timetravel-template.yaml",
           "target": "/root/"
         }
       ]

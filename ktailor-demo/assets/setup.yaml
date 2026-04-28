@@ -1,4 +1,61 @@
 ---
+#
+# ==== setup.yaml for kTailor killercoda scenario ====
+#
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ktailor
+  namespace: ktailor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ktailor
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ktailor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ktailor
+subjects:
+- kind: ServiceAccount
+  name: ktailor
+  namespace: ktailor
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ktailor-selfsigned
+  namespace: ktailor
+spec:
+  selfSigned: {}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ktailor-serving-cert
+  namespace: ktailor
+spec:
+  dnsNames:
+  - ktailor.ktailor.svc
+  - ktailor.ktailor.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: ktailor-selfsigned
+  secretName: ktailor-webhook-certs
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -26,6 +83,7 @@ data:
           - "dev-"
         endsWith:
           - "-tmp"
+
 ---
 apiVersion: v1
 kind: Service
@@ -38,7 +96,9 @@ spec:
     targetPort: 8443
   selector:
     app: ktailor
+
 ---
+# kTailor webapp for webhook
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -80,6 +140,7 @@ spec:
           name: ktailor-config
 
 ---
+# finally, the mutating webhook definition
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
