@@ -27,7 +27,7 @@ spec:
           - "while true; do echo \"$(date) - KTAILORTEST: ${KTAILORTEST}\"; sleep 3; done"
         env:
           - name: KTAILORTEST
-            value: "°º¤ø,¸¸,ø¤º°`°º¤ø,¸This text will be overwritten by kTailor¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸"
+            value: "°º¤ø,¸¸,ø¤º°`°º¤ø,¸  This text will be overwritten by kTailor  ¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸"
 
 ---
 #
