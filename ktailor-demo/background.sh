@@ -37,11 +37,11 @@ kubectl apply -f assets/setup.yaml
 
 # Wait for kTailor
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
-touch /tmp/.ktailor_ready
+touch /root/.ktailor_ready
 
 # 6. Install apps
 kubectl apply -f assets/apps.yaml
 kubectl wait --for=condition=Available deployment/timetravel-app -n default --timeout=60s
-touch /tmp/.apps_ready
+touch /root/.apps_ready
 
 touch /root/.background_ready
