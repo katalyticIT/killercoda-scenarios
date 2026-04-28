@@ -17,7 +17,7 @@ Now we use a **local** template stored in the same namespace as the application 
 5. A new pod gets started which takes some time because the image for the initContainer needs to be pulled. Then the old pod terminates:
 `kubectl get pods -l=app=timetravel`{{execute}}
 
-6. Finally, verify the mutation in the logs - the container thinks it's in the future:
+6. Wait until the old pod is gone, otherwise you might still get its logs. Then verify the mutation in the logs - the container thinks it's in the future:
 `kubectl logs deploy/timetravel-app | tail -n 1`{{execute}}
 
 7. kTailor successfully moved the container "into the future".

@@ -2,7 +2,7 @@
 
 In this step, we use a **central** template managed in the `ktailor` namespace.
 
-1. Check the installed app and the env variable that#s set inside the container:
+1. Check the installed app and the env variable that's set inside the container:
 `kubectl exec deploy/insert-env-app -- env | grep KTAILORTEST`{{execute}}
 
 2. Lets have a look at the demo template. It manipulates one env var and consists of just a handful of lines:
