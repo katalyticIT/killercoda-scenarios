@@ -161,3 +161,5 @@ webhooks:
     apiVersions: ["v1"]
     resources: ["deployments"]
   sideEffects: None
+  failurePolicy: Ignore
+
