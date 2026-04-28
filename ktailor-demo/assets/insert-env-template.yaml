@@ -11,4 +11,4 @@ data:
       insertOrOverwrite:
         env:
           - name: KTAILORTEST
-            value: "The content of this variable was modified by kTailor."
+            value: "~~~~~~~~ The content of this variable was modified by kTailor. ~~~~~~~~"
