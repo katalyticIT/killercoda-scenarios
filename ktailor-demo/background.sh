@@ -21,6 +21,10 @@ if [ $? -ne 0 ] ; then
   echo >/root/error.txt "Certificate manager couldn't be installed (in time). Perhaps there's not enough free ressources. Please try again later."
 fi
 
+echo "========"
+kubectl get pods -A
+echo "========"
+
 # 5. Install kTailor from local assets
 kubectl apply -f assets/setup.yaml
 
