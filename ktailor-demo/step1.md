@@ -12,7 +12,7 @@ In this step, we use a **central** template managed in the `ktailor` namespace.
 `kubectl apply -f /root/insert-env-template.yaml`{{execute}}
 
 3. Now we label the app with a references to the template (`central.ktailor-test`):
-`kubectl label deployment insert-env-app ktailor.dev/fit="central.ktailor-test"`{{execute}}
+`kubectl label --overwrite deployment insert-env-app ktailor.dev/fit="central.ktailor-test"`{{execute}}
 
 3. A new pod gets installed, the old one terminates:
 `kubectl get pods -l=app=insert-env-app`{{execute}}
