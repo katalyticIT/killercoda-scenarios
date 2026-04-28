@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insert-env-app
+  namespace: default
+#  labels:
+#    ktailor.dev/fit: "central.ktailor-test"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insert-env-app
+  template:
+    metadata:
+      labels:
+        app: insert-env-app
+    spec:
+      containers:
+      - name: insert-env-app
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - "while true; do echo \"$(date) - KTAILORTEST: ${KTAILORTEST}\"; sleep 3; done"
+        env:
+          - name: KTAILORTEST
+            value: "This text will be overwritten by kTailor."

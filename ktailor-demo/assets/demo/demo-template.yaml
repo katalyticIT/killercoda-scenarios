@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ktailor-test
+  namespace: ktailor
+  labels:
+    ktailor.dev/template: "true"
+data:
+  template: |
+    modifyContainers:
+      insertOrOverwrite:
+        env:
+          - name: KTAILORTEST
+            value: "The content of this variable was modified by kTailor."

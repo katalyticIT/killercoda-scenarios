@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetravel-app
+  namespace: default
+#  labels:
+#    ktailor.dev/fit: "local.lft-plus222d"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timetravel
+  template:
+    metadata:
+      labels:
+        app: timetravel
+    spec:
+      containers:
+      - name: timetravel
+        image: debian:bookworm-slim
+        command: ["bash", "-c", "while true ; do date ; sleep 2 ; done "]

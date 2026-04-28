@@ -29,115 +29,11 @@ kubectl apply -f assets/manifests.yaml
 # Wait for kTailor
 kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=60s
 
-# 6. Prepare User Files
-cat << 'EOF' > /root/demo-app.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: insert-env-app
-  namespace: default
-  labels:
-    ktailor.dev/fit: "central.ktailor-test"
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: insert-env-app
-  template:
-    metadata:
-      labels:
-        app: insert-env-app
-    spec:
-      containers:
-      - name: insert-env-app
-        image: alpine:latest
-        command: ["/bin/sh", "-c"]
-        args:
-          - "while true; do echo \"$(date) - KTAILORTEST: ${KTAILORTEST}\"; sleep 3; done"
-        env:
-          - name: KTAILORTEST
-            value: "This text will be overwritten by kTailor."
+# 6. Install apps
+kubectl apply -f /root/demo-app.yaml
+kubectl apply -f /root/timetravel-app.yaml
 
-EOF
+kubectl wait --for=condition=Available deployment/timetravel-app -n default --timeout=60s
 
-cat << 'EOF' > /root/demo-template.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ktailor-test
-  namespace: ktailor
-  labels:
-    ktailor.dev/template: "true"
-data:
-  template: |
-    modifyContainers:
-      insertOrOverwrite:
-        env:
-          - name: KTAILORTEST
-            value: "The content of this variable was modified by kTailor."
-EOF
-
-cat << 'EOF' > /root/timetravel-template.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: lft-plus222d
-  namespace: default
-  labels:
-    ktailor.dev/template: "true"
-data:
-  template: |
-    modifyContainers:
-      insertIfNotExists:
-        volumeMounts:
-          - name: shared-lft-volume
-            mountPath: /lft_volume
-      insertOrOverwrite:
-        env:
-          - name: FAKETIME
-            value: "+222d"
-      setOrAppend:
-        env:
-          - name: LD_PRELOAD
-            value: "/lft_volume/libfaketime.so.1"
-            separator: ":"
-    addInitContainers:
-      - name: inject-libfaketime
-        image: katalytic/libfaketime_init:1.0
-        env:
-          - name: LFT_DESTPATH
-            value: /lft_volume
-        volumeMounts:
-        - name: shared-lft-volume
-          mountPath: /lft_volume
-    addVolumes:
-      volumes:
-        - name: shared-lft-volume
-          emptyDir: {}
-EOF
-
-cat << 'EOF' > /root/timetravel-app.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: timetravel-app
-  namespace: default
-  labels:
-    ktailor.dev/fit: "local.lft-plus222d"
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: timetravel
-  template:
-    metadata:
-      labels:
-        app: timetravel
-    spec:
-      containers:
-      - name: timetravel
-        image: debian:bookworm-slim
-        command: ["bash", "-c", "while true ; do date ; sleep 2 ; done "]
-EOF
 
 touch /root/.background_ready
