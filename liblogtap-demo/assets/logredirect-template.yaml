@@ -1,0 +1,55 @@
+---
+#
+# Example kTailor template which shows how to intercept log output
+#
+# It shows how to read from a non 12 factor app's log file
+# and write the content to the containers stdout stream instead,
+# where it can be handled by the k8s standard tools
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logredirect
+  namespace: ktailor
+  labels:
+    ktailor.dev/template: "true"
+data:
+  template: |
+
+    modifyContainers:
+
+      insertIfNotExists:
+        volumeMounts:
+          - name: shared-lib-volume    # mount the volume with the library
+            mountPath: /lib_volume
+
+      insertOrOverwrite:
+        env:
+          - name: LLT_PASSIV_ON_START
+            value: 10                   # time(ms) which the library stays passive on startup
+          - name: LLT_TAP_FILE
+            value: /tmp/demo.log        # this is the file we want to intercept
+          - name: LLT_SUPPRESS_TAP_FILE
+            value: true                 # don't write to the legacy apps log file
+          - name: LLT_TARGET
+            value: file:/proc/1/fd/1    # stdout of the containers main process
+
+      setOrAppend:
+        env:
+          - name: LD_PRELOAD
+            value: /lib_volume/liblogtap.so  # place liblogtap between app and glibc
+            separator: ":"
+
+    addInitContainers:
+      - name: inject-lib  # this initContainer writes the library into the shared volume
+        image: katalytic/liblogtap-demo:1.1.26.161
+        imagePullPolicy: IfNotPresent
+        command: ["cp", "-v", "/usr/local/lib/liblogtap.so", "/lib_volume/liblogtap.so"]
+        volumeMounts:
+        - name: shared-lib-volume
+          mountPath: /lib_volume
+
+    addVolumes:
+      volumes:                     # shared volume where the initContainer writes the
+        - name: shared-lib-volume  # library to & where the appContainer reads it from
+          emptyDir: {}

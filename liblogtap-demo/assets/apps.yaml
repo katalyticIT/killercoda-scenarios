@@ -1,0 +1,25 @@
+---
+#
+# kTailor liblogtap demo
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logtapdemo
+  namespace: default
+#  labels:
+#    ktailor.dev/fit: "local.lft-plus222d"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logtapdemo
+  template:
+    metadata:
+      labels:
+        app: logtapdemo
+    spec:
+      containers:
+      - name: logtapdemo
+        image: katalytic/liblogtap-demo:1.1.26.161
+        command: ["python3", "-u", "/app/demo_app.py"]

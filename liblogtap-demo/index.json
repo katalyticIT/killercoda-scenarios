@@ -1,0 +1,44 @@
+{
+  "title": "liblogtap - intercept text files in containers",
+  "description": "Tap into log files in Kubernetes containers and forward the output to the desired location.",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "foreground": "foreground.sh",
+      "background": "background.sh"
+    },
+    "steps": [
+      {
+        "title": "Intercept log files inside a container",
+        "text": "step1.md"
+      }
+    ],
+
+    "assets": {
+      "host01": [
+        {
+          "file": "setup.yaml",
+          "target": "/root/assets/"
+        },
+        {
+          "file": "apps.yaml",
+          "target": "/root/assets/"
+        },
+        {
+          "file": "logredirect-template.yaml",
+          "target": "/root/"
+        }
+      ]
+    },
+
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "kubernetes-kubeadm-1node"
+  }
+}
