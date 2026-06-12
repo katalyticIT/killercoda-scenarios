@@ -1,5 +1,5 @@
 {
-  "title": "liblogtap - intercept text files in containers",
+  "title": "liblogtap - intercept log files in containers",
   "description": "Tap into log files in Kubernetes containers and forward the output to the desired location.",
   "details": {
     "intro": {
