@@ -20,5 +20,5 @@ In this step, we use a **central** template managed in the `ktailor` namespace.
 4. Once the new pod is running, check the output:
 `kubectl exec deploy/insert-env-app -- env | grep KTAILORTEST`{{execute}}
 
-5. ktailor modified the deployment on the fly, oberwriting the environment variable.
+5. ktailor modified the deployment on the fly, overwriting the environment variable.
 

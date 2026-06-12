@@ -1,24 +1,26 @@
-# Step 1: Central Templates
+# Redirecting fixed logfile
 
-In this step, we use a **central** template managed in the `ktailor` namespace.
+Sometimes a legacy app "needs" to be moved into the container world,
+leading to a logfile inside the container and no log output on the containers
+stdout stream and thus no log to be searchable in your ELK stack (or similar).
 
-1. Check the installed app and the env variable that's set inside the container:
-`kubectl exec deploy/insert-env-app -- env | grep KTAILORTEST`{{execute}}
+1. Check the installed app and view the legacy apps logfile inside the container:
+`kubectl exec deploy/logtapdemo -- head /tmp/demo.log`{{execute}}
 
-2. Lets have a look at the demo template. It manipulates one env var and consists of just a handful of lines:
-`cat insert-env-template.yaml`{{execute}}
+2. Lets have a look at the already deployed template for the kTailor webhook. According to this, kTailor will insert liblogtap into the container and log output will be redirected to its stdout:
+`cat logredirect-template.yaml`{{execute}}
 
-3. Let's deploy it as a central template:
-`kubectl apply -f /root/insert-env-template.yaml`{{execute}}
+3. Now we just label the app with a references to the template (`central.logredirect`):
+`kubectl label --overwrite deployment logtapdemo ktailor.dev/fit="central.logredirect"`{{execute}}
 
-3. Now we label the app with a references to the template (`central.ktailor-test`):
-`kubectl label --overwrite deployment insert-env-app ktailor.dev/fit="central.ktailor-test"`{{execute}}
+4. A new pod gets installed, the old one terminates:
+`kubectl get pods -l=app=logtapdemo`{{execute}}
 
-3. A new pod gets installed, the old one terminates:
-`kubectl get pods -l=app=insert-env-app`{{execute}}
+5. Once the new pod is running, check the logfile inside the container - it now stays empty:
+`kubectl exec deploy/logtapdemo -- cat /tmp/demo.log`{{execute}}
 
-4. Once the new pod is running, check the output:
-`kubectl exec deploy/insert-env-app -- env | grep KTAILORTEST`{{execute}}
+6. Instead the log output appears on the stdout stream of the container - the way it should be:
+`kubectl logs deploy/logtapdemo`{{execute}}
 
-5. ktailor modified the deployment on the fly, oberwriting the environment variable.
+7. ktailor modified the deployment on the fly, inserting the liblogtap plibrary and some environment variables to cotrol its bevavoiur.
 
