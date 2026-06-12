@@ -45,6 +45,6 @@ kubectl wait --for=condition=Available deployment/timetravel-app -n default --ti
 touch /root/.apps_ready
 
 # 7. Install the kTailor templates
-kubectl apply -f assets/logredirect-template.yaml
+kubectl apply -f logredirect-template.yaml
 
 touch /root/.background_ready
