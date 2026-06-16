@@ -3,7 +3,7 @@
   set +x
   set +v
   clear
-  echo -e "\n✨ Welcome to the kTailor Demo! \n"
+  echo -e "\n✨ Starting the DeLorean ... \n"
 
   echo -n "Installing the certificate manager ..."
   while [ ! -f /root/.certmanager_ready ]; do
