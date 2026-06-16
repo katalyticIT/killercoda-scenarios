@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marty-mcfly
+  namespace: default
+  labels:
+    ktailor.dev/fit: "local.timetravel-template-1985"
+
+metadata:
+  name: marty-mcfly
+  labels:
+    app: marty
+
+spec:
+  selector:
+    matchLabels:
+      app: marty
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: marty
+    spec:
+      containers:
+        - name:  marty
+          image: katalytic/martymcfly:latest
+          ports:
+            - containerPort: 8080
+
+#          env:
+#            - name: LD_PRELOAD
+#              value: /usr/lib/x86_64-linux-gnu/faketime/libfaketimeMT.so.1
+#            - name: FAKETIME
+#              value: "@1985-10-26 01:15:00"      #-- starting at point in time
+
