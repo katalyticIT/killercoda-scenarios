@@ -1,39 +1,29 @@
-# Redirecting fixed logfile
+# Moving containers through time
 
-Sometimes a legacy app "needs" to be moved into the container world and of course one
-would ask for time to rewrite it according to 12 factros, but, well, management ...
+Timetravel for containers isn't rocket science. It can be done easily with an
+open source library called *libfaketime*. And using *kTailor* as a manipulating
+kubernetes webhook in the background, all it needs to start the timetravel is
+labeling your deployment. So lets get started.
 
-This may lead to a logfile inside the container, eating disk space,
-and no log output on the containers stdout stream, which means there's
-no log to be searchable in your ELK stack (or similar). :-(
-
-Liblogtap helps you to cure this _without having to manipulate the
-legacy app or its docker image._
 
 1. First, list the pods of the legacy application:
-`kubectl get pods -l=app=logtapdemo`{{execute}}
+`kubectl get pods -l=app=marty-mcfly`{{execute}}
 
 2. Check the logfile which is written inside the container:
-`kubectl exec deploy/logtapdemo -- tail /tmp/demo.log`{{execute}}
+`kubectl logs deploy/marty-mcfly`{{execute}}
 
 3. Now lets have a look at the already deployed template for the kTailor webhook. According to this, kTailor will insert liblogtap into the container and log output will be redirected to its stdout:
 `cat logredirect-template.yaml`{{execute}}
 
-4. Now we just label the app with a references to the template (`central.logredirect`):
-`kubectl label --overwrite deployment logtapdemo ktailor.dev/fit="central.logredirect"`{{execute}}
+4. Now we just label the Marty app with a references to the 2015 template (`local.timetravel-template-2015.yaml`):
+`kubectl label --overwrite deployment marty-mcfly ktailor.dev/fit="local.timetravel-template-2015.yaml"`{{execute}}
 
 5. A new pod gets installed, the old one terminates:
-`kubectl get pods -l=app=logtapdemo`{{execute}}
+`kubectl get pods -l=app=marty-mcfly`{{execute}}
 
 6. Once the new pod is running, check the logfile inside the container - it now stays empty:
-`kubectl exec deploy/logtapdemo -- tail /tmp/demo.log`{{execute}}
+`kubectl logs deploy/marty-mcfly`{{execute}}
 
-7. Instead the log output appears on the stdout stream of the container - the way it should be:
-`kubectl logs deploy/logtapdemo`{{execute}}
-
-ktailor modified the deployment on the fly, injecting the liblogtap library and some environment
-variables into the pod.
-
-As result, the log output is going to the pods stdout stream, being accessible for log aggregators,
-while the LLT_SUPPRESS_TAP_FILE variable keeps the filesystem inside the container nice and clean.
+ktailor modified the deployment on the fly, and the libfaketime library makes
+the container believe that it's in 2015 now.
 

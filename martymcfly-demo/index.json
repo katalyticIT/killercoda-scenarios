@@ -1,6 +1,6 @@
 {
-  "title": "liblogtap - intercept log files in containers",
-  "description": "Tap into log files in Kubernetes containers and forward the output to the desired location.",
+  "title": "Marty McFly - move containers through time",
+  "description": "You don't need 1.21 Gigawatt to move a container through time in kubernetes. All you need is a bit of open source software and labeling your deployment right.",
   "details": {
     "intro": {
       "text": "intro.md",
@@ -9,7 +9,7 @@
     },
     "steps": [
       {
-        "title": "Intercept log files inside a container",
+        "title": "Timetravel for containers",
         "text": "step1.md"
       }
     ],
