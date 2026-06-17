@@ -3,7 +3,15 @@
   set +x
   set +v
   clear
-  echo -e "\n✨ Starting the DeLorean ... \n"
+  echo -e "\n✨ Starting the DeLorean ... Please wait for the 'Cluster is ready!' message.\n"
+
+  echo -n "Installing nginx proxy for accessing the app with your browser ..."
+  while [ ! -f /root/.nginx_ready ]; do
+    sleep 2
+    echo -n "."
+  done
+  echo " done."
+
 
   echo -n "Installing the certificate manager ..."
   while [ ! -f /root/.certmanager_ready ]; do
@@ -31,7 +39,7 @@
     cat /root/error.txt
     echo ""
   else
-    echo -e "\n✅ Ready! Click 'Start' on the right.\n"
+    echo -e "\n✅ Cluster is ready! Click 'Start' on the right.\n"
   fi
 
   # add some aliases

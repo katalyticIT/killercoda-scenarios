@@ -13,6 +13,6 @@ to the top right and choose "Traffic/Ports". You'll be directed to a page where
 you may choose between different ports. Click on the grey button labeled "80".
 
 3. A new tab opens with three time displays. The top one shows the time inside
-the container, to middle one the real time outside. As you can see, the Marty
-app runs in the year 1985. Let's bring it back to the future.
+the container, the middle one shows the real time outside. As you can see, the
+Marty app runs in the year 1985. Let's bring it back to the future.
 

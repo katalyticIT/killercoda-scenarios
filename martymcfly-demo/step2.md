@@ -1,6 +1,6 @@
 # The engine is running. Let's go.
 
-4. Now we just label the Marty app with a references to the 2015 template (`local.timetravel-template-2015.yaml`):
+4. Now we just label the Marty app with a references to the 2015 template:
 `kubectl label --overwrite deployment marty-mcfly ktailor.dev/fit="local.timetravel-template-2015"`{{execute}}
 
 5. A new pod gets installed, the old one terminates:

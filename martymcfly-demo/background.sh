@@ -13,6 +13,7 @@ echo "alias ns='kubectl config set-context --current --namespace'" >> /root/.bas
 sudo apt-get -y -qq install nginx
 sudo cp assets/etc.nginx.sites-enabled.default /etc/nginx/sites-enabled/default
 sudo systemctl reload nginx.service
+touch /root/.nginx_ready
 
 # 2. Create Namespace
 kubectl create namespace ktailor
