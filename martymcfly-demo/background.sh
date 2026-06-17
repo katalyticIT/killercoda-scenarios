@@ -10,7 +10,7 @@ echo "alias kc='kubectl'" >> /root/.bashrc
 echo "alias ns='kubectl config set-context --current --namespace'" >> /root/.bashrc
 
 # 2. install nginx for access with browser
-sudo apt-get -y  install nginx
+sudo apt-get -y -qq install nginx
 sudo cp assets/etc.nginx.sites-enabled.default /etc/nginx/sites-enabled/default
 sudo systemctl reload nginx.service
 
@@ -45,8 +45,8 @@ kubectl wait --for=condition=Available deployment/ktailor -n ktailor --timeout=6
 touch /root/.ktailor_ready
 
 # 6. Install the kTailor templates
-kubectl apply -f assets/timetravel-template-1985.yaml
-kubectl apply -f assets/timetravel-template-2015.yaml
+kubectl apply -f timetravel-template-1985.yaml
+kubectl apply -f timetravel-template-2015.yaml
 
 # 7. Install apps
 kubectl apply -f assets/apps.yaml

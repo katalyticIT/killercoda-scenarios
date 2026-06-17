@@ -34,8 +34,9 @@
     echo -e "\n✅ Ready! Click 'Start' on the right.\n"
   fi
 
+  # add some aliases
+  . /root/.bashrc
+
 } 2>/dev/null
 
-# add some aliases
-. /root/.bashrc
 

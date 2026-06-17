@@ -25,7 +25,15 @@
           "target": "/root/assets/"
         },
         {
-          "file": "logredirect-template.yaml",
+          "file": "etc.nginx.sites-enabled.default",
+          "target": "/root/assets"
+        },
+        {
+          "file": "timetravel-template-1985.yaml",
+          "target": "/root/"
+        },
+        {
+          "file": "timetravel-template-2015.yaml",
           "target": "/root/"
         }
       ]
