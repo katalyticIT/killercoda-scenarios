@@ -1,0 +1,165 @@
+---
+#
+# ==== setup.yaml for kTailor killercoda scenario ====
+#
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ktailor
+  namespace: ktailor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ktailor
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ktailor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ktailor
+subjects:
+- kind: ServiceAccount
+  name: ktailor
+  namespace: ktailor
+
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ktailor-selfsigned
+  namespace: ktailor
+spec:
+  selfSigned: {}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ktailor-serving-cert
+  namespace: ktailor
+spec:
+  dnsNames:
+  - ktailor.ktailor.svc
+  - ktailor.ktailor.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: ktailor-selfsigned
+  secretName: ktailor-webhook-certs
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ktailor-config
+  namespace: ktailor
+data:
+  ktailor.yaml: |
+    ---
+    transport:
+      port: 8443
+      secure: true
+      cert: /etc/ktailor/certs/tls.crt
+      key: /etc/ktailor/certs/tls.key
+    logging:
+      level: INFO
+    templates:
+      allowCustomTemplates: true
+    namespaces:
+      mode: blocklist   # Options: blocklist, allowlist
+      match:
+        exact:
+          - ignore-this-namespace
+        startsWith:
+          - "test-"
+          - "dev-"
+        endsWith:
+          - "-tmp"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ktailor
+  namespace: ktailor
+spec:
+  ports:
+  - port: 443
+    targetPort: 8443
+  selector:
+    app: ktailor
+
+---
+# kTailor webapp for webhook
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ktailor
+  namespace: ktailor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ktailor
+  template:
+    metadata:
+      labels:
+        app: ktailor
+    spec:
+      serviceAccountName: ktailor
+      containers:
+      - name: ktailor
+        image: katalytic/ktailor:latest
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: certs
+          mountPath: /etc/ktailor/certs
+          readOnly: true
+        - name: config
+          mountPath: /etc/ktailor
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      volumes:
+      - name: certs
+        secret:
+          secretName: ktailor-webhook-certs
+      - name: config
+        configMap:
+          name: ktailor-config
+
+---
+# finally, the mutating webhook definition
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: ktailor
+  annotations:
+    cert-manager.io/inject-ca-from: ktailor/ktailor-serving-cert
+webhooks:
+- name: mutate.ktailor.dev
+  admissionReviewVersions: ["v1"]
+  clientConfig:
+    service:
+      name: ktailor
+      namespace: ktailor
+      path: /mutate
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["apps"]
+    apiVersions: ["v1"]
+    resources: ["deployments"]
+  sideEffects: None
+  failurePolicy: Ignore
+

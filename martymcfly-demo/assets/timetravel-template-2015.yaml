@@ -1,0 +1,46 @@
+#
+# configmap as template for kTailor
+#
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timetravel-template-2015
+  namespace: default
+  labels:
+    ktailor.dev/template: "true" # triggers the loading mechanism
+data:
+  template: |
+
+    # 1) changes to the main container; modify env & volumeMounts
+    modifyContainers:
+      insertIfNotExists:
+        volumeMounts:
+          - name: shared-lft-volume
+            mountPath: /lft_volume  # mount the shared volume with the library
+      insertOrOverwrite:
+        env:
+          - name: FAKETIME
+            value: "@2015-10-21 16:29:00"  # start at this point in time
+      setOrAppend:
+        env:
+          - name: LD_PRELOAD
+            value: "/lft_volume/libfaketime.so.1"  # preload libfaketime
+            separator: ":"
+
+    # 2) add an initContainer which injects libfaketime into the shared volume
+    addInitContainers:
+      - name: inject-libfaketime
+        image: katalytic/libfaketime_init:1.0
+        env:
+          - name: LFT_DESTPATH
+            value: /lft_volume
+        volumeMounts:
+        - name: shared-lft-volume  # mount the shared volume to write libfaketime into
+          mountPath: /lft_volume
+
+    # 3) add the shared volume
+    addVolumes:
+      volumes:
+        - name: shared-lft-volume
+          emptyDir: {}

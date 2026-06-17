@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timetravel-template-1985
+  namespace: default
+  labels:
+    ktailor.dev/template: "true"
+data:
+  template: |
+    modifyContainers:
+      insertIfNotExists:
+        volumeMounts:
+          - name: shared-lft-volume
+            mountPath: /lft_volume
+      insertOrOverwrite:
+        env:
+          - name: FAKETIME
+            value: "@1985-10-26 01:15:00"
+      setOrAppend:
+        env:
+          - name: LD_PRELOAD
+            value: "/lft_volume/libfaketime.so.1"
+            separator: ":"
+    addInitContainers:
+      - name: inject-libfaketime
+        image: katalytic/libfaketime_init:1.0
+        env:
+          - name: LFT_DESTPATH
+            value: /lft_volume
+        volumeMounts:
+        - name: shared-lft-volume
+          mountPath: /lft_volume
+    addVolumes:
+      volumes:
+        - name: shared-lft-volume
+          emptyDir: {}
