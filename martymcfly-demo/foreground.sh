@@ -35,3 +35,7 @@
   fi
 
 } 2>/dev/null
+
+# add some aliases
+. /root/.bashrc
+
