@@ -1,5 +1,5 @@
 {
-  "title": "Erweitertes Pod-Scheduling: Node Affinity, Taints und Tolerations",
+  "title": "Kubernetes: 2. Erweitertes Pod-Scheduling: Node Affinity, Taints und Tolerations",
   "description": "Geführte Übung: Pod-Platzierungen flexibel mit Node Affinity (Required & Preferred) steuern und Nodes gezielt durch Taints und Tolerations schützen.",
   "details": {
     "intro": {

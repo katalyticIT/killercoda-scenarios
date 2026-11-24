@@ -1,5 +1,5 @@
 {
-  "title": "Pod-Scheduling mit NodeSelector steuern",
+  "title": "Kubernetes: 1. Pod-Scheduling mit NodeSelector steuern",
   "description": "Geführte Übung: Kubernetes-Nodes mit Labels versehen und Pods mithilfe von nodeSelector gezielt auf bestimmten Nodes platzieren.",
   "details": {
     "intro": {
