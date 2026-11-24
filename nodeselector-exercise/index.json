@@ -1,6 +1,6 @@
 {
   "title": "Pod-Scheduling mit NodeSelector steuern",
-  "description": "Lerne, wie du Kubernetes-Nodes mit Labels versiehst und Pods mithilfe von nodeSelector gezielt auf bestimmten Nodes platzierst.",
+  "description": "Geführte Übung: Kubernetes-Nodes mit Labels versehen und Pods mithilfe von nodeSelector gezielt auf bestimmten Nodes platzieren.",
   "details": {
     "intro": {
       "text": "intro.md"
@@ -34,6 +34,25 @@
     ],
     "finish": {
       "text": "finish.md"
+    },
+    "assets": {
+      "host01": [
+        {
+          "file": "pod-green.yaml",
+          "target": "/root/",
+          "chmod": "+r"
+        },
+        {
+          "file": "pod-blue.yaml",
+          "target": "/root/",
+          "chmod": "+r"
+        },
+        {
+          "file": "pod-red.yaml",
+          "target": "/root/",
+          "chmod": "+r"
+        }
+      ]
     }
   },
   "backend": {

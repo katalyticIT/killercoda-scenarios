@@ -1,53 +1,28 @@
-## Aufgabe 3: Pod auf dem Node `room-blue` starten
+## Schritt 3: Pod auf dem Node `room-blue` starten
 
-Wiederhole das Prinzip nun für den zweiten Standort und starte einen Pod mit dem Namen **`pod-blue`** auf dem Node mit dem Label `location=room-blue`.
+Als Nächstes startest du den zweiten Pod **`pod-blue`**, der über `location: room-blue` auf `node01` landen soll.
 
-**Anforderungen an den Pod:**
-- **Name:** `pod-blue`
-- **Image:** `busybox:1.36`
-- **Scheduling:** `nodeSelector` auf `location: room-blue`
-- **Ausgabe im Log:** Alle **5 Sekunden** die aktuelle Uhrzeit und den Namen des Nodes ausgeben.
+### 1. Manifest prüfen und Pod starten
 
-Prüfe anschließend wieder:
-1. Auf welchem Node läuft `pod-blue`?
-2. Welche Ausgaben erscheinen im Log von `pod-blue`?
+Sieh dir `pod-blue.yaml` an und erstelle den Pod:
 
-<details>
-<summary>Hilfe &amp; Musterlösung anzeigen</summary>
-
-Manifest `pod-blue.yaml` erstellen und anwenden:
 ```bash
-cat <<'EOF' > pod-blue.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-blue
-spec:
-  nodeSelector:
-    location: room-blue
-  containers:
-  - name: logger
-    image: busybox:1.36
-    env:
-    - name: NODE_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: spec.nodeName
-    command: ["/bin/sh", "-c"]
-    args:
-    - while true; do echo "$(date '+%H:%M:%S') - Pod läuft auf Node: $NODE_NAME"; sleep 5; done
-EOF
+cat pod-blue.yaml
 kubectl apply -f pod-blue.yaml
 ```{{exec}}
 
-Platzierung beider Pods auf den unterschiedlichen Nodes vergleichen:
+### 2. Node-Verteilung beider Pods vergleichen
+
+Lass dir alle laufenden Pods mit `-o wide` anzeigen. `pod-green` sollte auf `controlplane` und `pod-blue` auf `node01` laufen:
+
 ```bash
 kubectl get pods -o wide
 ```{{exec}}
 
-Logs von `pod-blue` kontrollieren:
+### 3. Logs von `pod-blue` kontrollieren
+
+Überprüfe im Log, dass der Container tatsächlich `node01` als ausführenden Node meldet:
+
 ```bash
 kubectl logs pod-blue
 ```{{exec}}
-
-</details>

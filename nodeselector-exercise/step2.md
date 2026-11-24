@@ -1,55 +1,32 @@
-## Aufgabe 2: Pod auf dem Node `room-green` starten
+## Schritt 2: Pod auf dem Node `room-green` starten
 
-Erstelle nun einen Pod mit dem Namen **`pod-green`**, der ausschließlich auf dem Node mit dem Label `location=room-green` eingeplant wird.
+Nun startest du den ersten Pod **`pod-green`**, der über `spec.nodeSelector` gezielt auf dem Node mit dem Label `location=room-green` eingeplant wird.
 
-**Anforderungen an den Pod:**
-- **Name:** `pod-green`
-- **Image:** `busybox:1.36`
-- **Scheduling:** `nodeSelector` auf `location: room-green`
-- **Ausgabe im Log:** Alle **5 Sekunden** sollen die aktuelle Uhrzeit und der Name des ausführenden Nodes ausgegeben werden.
+### 1. Manifest ansehen
 
-> **Tipp:** Über die Kubernetes **Downward API** (`valueFrom.fieldRef.fieldPath: spec.nodeName`) kannst du den Namen des aktuellen Nodes als Umgebungsvariable (z. B. `NODE_NAME`) an den Container übergeben.
+Wirf zuerst einen Blick in die vorbereitete Datei `pod-green.yaml`:
 
-Nach dem Start des Pods:
-1. Prüfe mit `kubectl`, auf welchem Node `pod-green` tatsächlich läuft.
-2. Kontrolliere die Log-Ausgaben des Pods.
-
-<details>
-<summary>Hilfe &amp; Musterlösung anzeigen</summary>
-
-Manifest `pod-green.yaml` erstellen und anwenden:
 ```bash
-cat <<'EOF' > pod-green.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-green
-spec:
-  nodeSelector:
-    location: room-green
-  containers:
-  - name: logger
-    image: busybox:1.36
-    env:
-    - name: NODE_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: spec.nodeName
-    command: ["/bin/sh", "-c"]
-    args:
-    - while true; do echo "$(date '+%H:%M:%S') - Pod läuft auf Node: $NODE_NAME"; sleep 5; done
-EOF
+cat pod-green.yaml
+```{{exec}}
+
+> **Hinweis zum Aufbau:** Über `spec.nodeSelector` fordert der Pod das Label `location: room-green`. Zusätzlich liest der Container über die **Downward API** (`spec.nodeName`) den Namen seines Host-Nodes in die Umgebungsvariable `NODE_NAME` ein und gibt ihn alle 5 Sekunden zusammen mit der Uhrzeit aus.
+
+### 2. Pod erstellen
+
+Wende das Manifest auf den Cluster an:
+
+```bash
 kubectl apply -f pod-green.yaml
 ```{{exec}}
 
-Prüfen, auf welchem Node der Pod eingeplant wurde (Spalte `NODE`):
+### 3. Platzierung und Logs prüfen
+
+Kontrolliere mit `-o wide` in der Spalte `NODE`, auf welchem Node der Pod läuft, und lies anschließend die Log-Ausgaben aus:
+
 ```bash
 kubectl get pod pod-green -o wide
-```{{exec}}
-
-Logs kontrollieren (mit `Strg+C` beenden, falls `-f` genutzt wird):
-```bash
 kubectl logs pod-green
 ```{{exec}}
 
-</details>
+*(Falls der Container noch startet, warte kurz und führe `kubectl logs pod-green` erneut aus.)*

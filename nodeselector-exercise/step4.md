@@ -1,47 +1,28 @@
-## Aufgabe 4: Verhalten bei unerfüllbarem `nodeSelector` beobachten
+## Schritt 4: Pod für nicht vorhandenen Node (`room-red`) starten
 
-`nodeSelector` ist eine **harte Scheduling-Bedingung** (*Hard Requirement*). Was passiert, wenn ein Pod ein Label verlangt, das auf keinem Node im Cluster existiert?
+`nodeSelector` ist eine **harte Scheduling-Bedingung** (*Hard Requirement*). Was passiert, wenn kein Node im Cluster das geforderte Label besitzt?
 
-1. Erstelle einen dritten Pod mit dem Namen **`pod-red`** (ebenfalls auf Basis von `busybox:1.36`), der einen `nodeSelector` für `location: room-red` definiert.
-2. Überprüfe den Status des Pods mit `kubectl get pods`.
-3. Untersuche die Details und Events des Pods mit `kubectl describe pod pod-red`, um die genaue Ursache für den Status zu sehen.
+### 1. Manifest prüfen und `pod-red` starten
 
-<details>
-<summary>Hilfe &amp; Musterlösung anzeigen</summary>
+In `pod-red.yaml` ist `location: room-red` eingetragen – ein Label, das keiner unserer Nodes trägt. Starte den Pod:
 
-Manifest `pod-red.yaml` erstellen und anwenden:
 ```bash
-cat <<'EOF' > pod-red.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-red
-spec:
-  nodeSelector:
-    location: room-red
-  containers:
-  - name: logger
-    image: busybox:1.36
-    env:
-    - name: NODE_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: spec.nodeName
-    command: ["/bin/sh", "-c"]
-    args:
-    - while true; do echo "$(date '+%H:%M:%S') - Pod läuft auf Node: $NODE_NAME"; sleep 5; done
-EOF
+cat pod-red.yaml
 kubectl apply -f pod-red.yaml
 ```{{exec}}
 
-Status aller Pods prüfen (`pod-red` bleibt im Status `Pending` ohne zugewiesenen Node):
+### 2. Pod-Status prüfen
+
+Beobachte den Status in der Pod-Übersicht. `pod-red` bleibt im Status **`Pending`** und erhält in der Spalte `NODE` keinen Eintrag (`<none>`):
+
 ```bash
 kubectl get pods -o wide
 ```{{exec}}
 
-Scheduling-Fehlermeldung im Abschnitt `Events` nachlesen (`FailedScheduling: ... didn't match Pod's node affinity/selector`):
+### 3. Ursache in den Events untersuchen
+
+Lass dir die Details des Pods anzeigen und lies ganz unten den Abschnitt **`Events`**. Dort dokumentiert der `default-scheduler`, dass kein Node zum `nodeSelector` passt (`FailedScheduling`):
+
 ```bash
 kubectl describe pod pod-red
 ```{{exec}}
-
-</details>
