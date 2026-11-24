@@ -4,10 +4,10 @@ Nun startest du den ersten Pod **`pod-green`**, der über `spec.nodeSelector` ge
 
 ### 1. Manifest ansehen
 
-Öffne die vorbereitete Datei `pod-green.yaml` mit `less` (beende die Ansicht anschließend mit der Taste **`q`**):
+Zeige die vorbereitete Datei `pod-green.yaml` mit `cat` an:
 
 ```bash
-less pod-green.yaml
+cat pod-green.yaml
 ```{{exec}}
 
 > **Hinweis zum Aufbau:** Über `spec.nodeSelector` fordert der Pod das Label `location: room-green`. Zusätzlich liest der Container über die **Downward API** (`spec.nodeName`) den Namen seines Host-Nodes in die Umgebungsvariable `NODE_NAME` ein und gibt ihn alle 5 Sekunden zusammen mit der Uhrzeit aus.

@@ -4,10 +4,10 @@
 
 ### 1. Manifest prüfen
 
-In `pod-red.yaml` ist `location: room-red` eingetragen – ein Label, das keiner unserer Nodes trägt. Prüfe die Datei kurz mit `less` (beenden mit **`q`**):
+In `pod-red.yaml` ist `location: room-red` eingetragen – ein Label, das keiner unserer Nodes trägt. Prüfe die Datei kurz mit `cat`:
 
 ```bash
-less pod-red.yaml
+cat pod-red.yaml
 ```{{exec}}
 
 ### 2. Pod starten
@@ -18,11 +18,18 @@ Wende das Manifest an:
 kubectl apply -f pod-red.yaml
 ```{{exec}}
 
-### 3. Pod-Status und Events untersuchen
+### 3. Alle Pods überprüfen
 
-`pod-red` bleibt im Status **`Pending`** und erhält in der Spalte `NODE` keinen Eintrag (`<none>`). Im Abschnitt **`Events`** von `kubectl describe` dokumentiert der `default-scheduler`, dass kein Node zum `nodeSelector` passt (`FailedScheduling`):
+Lass dir alle Pods anzeigen. `pod-red` bleibt im Status **`Pending`** und erhält in der Spalte `NODE` keinen Eintrag (`<none>`):
 
 ```bash
 kubectl get pods -o wide
+```{{exec}}
+
+### 4. Details zum roten Pod prüfen
+
+Untersuche nun die Details des Pods. Ganz unten im Abschnitt **`Events`** dokumentiert der `default-scheduler`, dass kein Node zum `nodeSelector` passt (`FailedScheduling`):
+
+```bash
 kubectl describe pod pod-red
 ```{{exec}}

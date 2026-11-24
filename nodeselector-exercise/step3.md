@@ -4,10 +4,10 @@ Als Nächstes startest du den zweiten Pod **`pod-blue`**, der über `location: r
 
 ### 1. Manifest prüfen
 
-Sieh dir `pod-blue.yaml` mit `less` an (verlasse `less` wieder mit **`q`**):
+Sieh dir `pod-blue.yaml` mit `cat` an:
 
 ```bash
-less pod-blue.yaml
+cat pod-blue.yaml
 ```{{exec}}
 
 ### 2. Pod starten
