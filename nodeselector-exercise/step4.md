@@ -2,26 +2,33 @@
 
 `nodeSelector` ist eine **harte Scheduling-Bedingung** (*Hard Requirement*). Was passiert, wenn kein Node im Cluster das geforderte Label besitzt?
 
-### 1. Manifest prüfen und `pod-red` starten
+### 1. Manifest prüfen
 
-In `pod-red.yaml` ist `location: room-red` eingetragen – ein Label, das keiner unserer Nodes trägt. Starte den Pod:
+In `pod-red.yaml` ist `location: room-red` eingetragen – ein Label, das keiner unserer Nodes trägt. Prüfe die Datei kurz mit `cat`:
 
 ```bash
 cat pod-red.yaml
+```{{exec}}
+
+### 2. Pod starten
+
+Wende das Manifest an:
+
+```bash
 kubectl apply -f pod-red.yaml
 ```{{exec}}
 
-### 2. Pod-Status prüfen
+### 3. Alle Pods überprüfen
 
-Beobachte den Status in der Pod-Übersicht. `pod-red` bleibt im Status **`Pending`** und erhält in der Spalte `NODE` keinen Eintrag (`<none>`):
+Lass dir alle Pods anzeigen. `pod-red` bleibt im Status **`Pending`** und erhält in der Spalte `NODE` keinen Eintrag (`<none>`):
 
 ```bash
 kubectl get pods -o wide
 ```{{exec}}
 
-### 3. Ursache in den Events untersuchen
+### 4. Details zum roten Pod prüfen
 
-Lass dir die Details des Pods anzeigen und lies ganz unten den Abschnitt **`Events`**. Dort dokumentiert der `default-scheduler`, dass kein Node zum `nodeSelector` passt (`FailedScheduling`):
+Untersuche nun die Details des Pods. Ganz unten im Abschnitt **`Events`** dokumentiert der `default-scheduler`, dass kein Node zum `nodeSelector` passt (`FailedScheduling`):
 
 ```bash
 kubectl describe pod pod-red

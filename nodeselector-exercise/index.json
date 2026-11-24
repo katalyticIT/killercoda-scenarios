@@ -3,7 +3,8 @@
   "description": "Geführte Übung: Kubernetes-Nodes mit Labels versehen und Pods mithilfe von nodeSelector gezielt auf bestimmten Nodes platzieren.",
   "details": {
     "intro": {
-      "text": "intro.md"
+      "text": "intro.md",
+      "background": "background.sh"
     },
     "steps": [
       {

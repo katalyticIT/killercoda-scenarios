@@ -15,4 +15,4 @@ spec:
           fieldPath: spec.nodeName
     command: ["/bin/sh", "-c"]
     args:
-    - while true; do echo "$(date '+%H:%M:%S') - Pod läuft auf Node: $NODE_NAME"; sleep 5; done
+    - 'while true; do echo "$(date +%H:%M:%S) - Pod laeuft auf Node: $NODE_NAME"; sleep 5; done'

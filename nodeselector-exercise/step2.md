@@ -4,7 +4,7 @@ Nun startest du den ersten Pod **`pod-green`**, der über `spec.nodeSelector` ge
 
 ### 1. Manifest ansehen
 
-Wirf zuerst einen Blick in die vorbereitete Datei `pod-green.yaml`:
+Zeige die vorbereitete Datei `pod-green.yaml` mit `cat` an:
 
 ```bash
 cat pod-green.yaml
